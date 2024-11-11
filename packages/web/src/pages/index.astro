@@ -1,6 +1,6 @@
 ---
-import type { Media } from "../../../cms/src/payload-types";
-import { stringify } from "qs-esm";
+import type { Media } from '../../../cms/src/payload-types';
+import { stringify } from 'qs-esm';
 
 const select = {
   filename: true,
@@ -11,7 +11,7 @@ const stringifiedQuery = stringify({
 });
 
 const response = await fetch(
-  `${process.env.PAYLOAD_URL}/api/media/1?${stringifiedQuery}`
+  `${process.env.PAYLOAD_URL}/api/media/1?${stringifiedQuery}`,
 );
 const media: Media = await response.json();
 
@@ -27,6 +27,8 @@ console.log(media);
     <title></title>
   </head>
   <body>
-    <h1>{media.filename}</h1>
+    <div class="flex h-screen flex-col items-center justify-start p-4">
+      <h1 class="text-2xl font-bold text-blue-600">{media.filename}</h1>
+    </div>
   </body>
 </html>
