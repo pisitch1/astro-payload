@@ -1,13 +1,10 @@
 ---
-import { getPayload} from '../payload'
+// import type { Media } from '../payload-types'
 
-const p = await getPayload()
-const users = await p.find({
-  collection: 'users',
-  depth: 2
-})
+const response = await fetch(`${process.env.PAYLOAD_URL}/api/media/1?depth=1`)
+const media /*: Media */ = await response.json()
 
-console.log(users)
+console.log(media)
 ---
 
 <html lang="en">
