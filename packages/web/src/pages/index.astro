@@ -1,21 +1,32 @@
 ---
-import type { Media } from '../../../cms/src/payload-types'
+import type { Media } from "../../../cms/src/payload-types";
+import { stringify } from "qs-esm";
 
-const response = await fetch(`${process.env.PAYLOAD_URL}/api/media/1?depth=1`)
-const media: Media = await response.json()
+const select = {
+  filename: true,
+};
 
-console.log(media)
+const stringifiedQuery = stringify({
+  select,
+});
+
+const response = await fetch(
+  `${process.env.PAYLOAD_URL}/api/media/1?${stringifiedQuery}`
+);
+const media: Media = await response.json();
+
+console.log(media);
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title></title>
-	</head>
-	<body>
-		<h1>{media.filename}</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title></title>
+  </head>
+  <body>
+    <h1>{media.filename}</h1>
+  </body>
 </html>
