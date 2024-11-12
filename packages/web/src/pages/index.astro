@@ -2,6 +2,7 @@
 import { stringify } from 'qs-esm';
 
 import type { Page } from '../../../cms/src/payload-types';
+import { Image } from 'astro:assets';
 
 const where = {
   slug: { equals: 'home' },
@@ -41,10 +42,11 @@ console.log(home);
       }
       {
         home.image && typeof home.image !== 'string' && (
-          <img
+          <Image
             src={`${process.env.PAYLOAD_URL}${home.image.url}`}
             alt={home.image.alt}
-            class="h-full w-full object-cover"
+            class="h-full w-full object-contain"
+            inferSize={true}
           />
         )
       }
