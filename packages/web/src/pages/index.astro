@@ -1,21 +1,27 @@
 ---
-import type { Media } from '../../../cms/src/payload-types';
 import { stringify } from 'qs-esm';
 
-const select = {
-  filename: true,
+import type { Page } from '../../../cms/src/payload-types';
+
+const where = {
+  slug: { equals: 'home' },
 };
 
-const stringifiedQuery = stringify({
+const select = {
+  heading: true,
+  image: true,
+};
+
+const url = `${process.env.PAYLOAD_URL}/api/pages?${stringify({
+  where,
+})}&${stringify({
   select,
-});
+})}`;
+const response = await fetch(url);
+const results = await response.json();
+const home: Page = results.docs[0];
 
-const response = await fetch(
-  `${process.env.PAYLOAD_URL}/api/media/1?${stringifiedQuery}`,
-);
-const media: Media = await response.json();
-
-console.log(media);
+console.log(home);
 ---
 
 <html lang="en">
@@ -28,7 +34,20 @@ console.log(media);
   </head>
   <body>
     <div class="flex h-screen flex-col items-center justify-start p-4">
-      <h1 class="text-2xl font-bold text-blue-600">{media.filename}</h1>
+      {
+        home.heading && (
+          <h1 class="text-2xl font-bold text-blue-800">{home.heading}</h1>
+        )
+      }
+      {
+        home.image && typeof home.image !== 'string' && (
+          <img
+            src={`${process.env.PAYLOAD_URL}${home.image.url}`}
+            alt={home.image.alt}
+            class="h-full w-full object-cover"
+          />
+        )
+      }
     </div>
   </body>
 </html>
